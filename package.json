@@ -1,19 +1,28 @@
 {
   "name": "easyeatme",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/index.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.3.1",
+    "express": "^4.18.2",
     "openai": "^3.3.0"
   },
   "devDependencies": {
     "@types/node": "^20.3.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LtnH/easyEatMe.git"
+  },
+  "bugs": {
+    "url": "https://github.com/LtnH/easyEatMe/issues"
+  },
+  "homepage": "https://github.com/LtnH/easyEatMe#readme",
+  "description": ""
 }
