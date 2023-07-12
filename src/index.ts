@@ -17,6 +17,7 @@ const {
 } = require("firebase/firestore");
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('../swagger.json');
+const cors = require('cors');
 
 const app = express();
 app.use(express.json());
@@ -58,9 +59,10 @@ app.post('/openai-api', async (req, res) => {
     }
 });
 
-app.get('/recettes/vin', async (req, res) => {
+app.post('/recettes/vin', async (req, res) => {
     try {
-        const {recette} = req.body;
+        console.log(req)
+        const { recette } = req.body;
         const prompt = "donne moi seulement un nom de vin avec une petite description irais bien avec cette recette : " + recette;
 
         const configuration = new Configuration({

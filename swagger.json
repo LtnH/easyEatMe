@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://easyEatMe.swagger.io/api/v1"
+      "url": "http://localhost:3000/"
     }
   ],
   "tags": [
@@ -72,7 +72,7 @@
         }
       }
     },
-    "/ingretients": {
+    "/ingredients": {
       "get": {
         "tags": [
           "ingredient"
@@ -248,6 +248,50 @@
           },
           "500": {
             "description": "Une erreur est survenu a la création"
+          }
+        }
+      }
+    },
+    "/recettes/vin": {
+      "post": {
+        "tags": [
+          "recette"
+        ],
+        "summary": "retourne un vin",
+        "description": "permet de retourner un vin pour une recette donnée via IA",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "recette": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "vin": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Une erreur est survenu a la récupération du vin"
           }
         }
       }
