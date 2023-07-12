@@ -1,0 +1,534 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Swagger easyEatMe",
+    "description": "",
+    "version": "1.0."
+  },
+  "servers": [
+    {
+      "url": "https://easyEatMe.swagger.io/api/v1"
+    }
+  ],
+  "tags": [
+    {
+      "name": "ingredient",
+      "description": "toute les routes touchant au ingredient"
+    },
+    {
+      "name": "recette",
+      "description": "route appelant les recettes"
+    },
+    {
+      "name": "user",
+      "description": "Operations about user"
+    }
+  ],
+  "paths": {
+    "/ingredient": {
+      "post": {
+        "tags": [
+          "ingredient"
+        ],
+        "summary": "Ajoute un ingredient",
+        "description": "Ajoute un ingredient en base de donnée",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "message": "ingrédient créé avec succès"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "erreur lors de l'insertion"
+          }
+        }
+      }
+    },
+    "/ingretients": {
+      "get": {
+        "tags": [
+          "ingredient"
+        ],
+        "summary": "récupère tout les ingredients",
+        "description": "remonte une liste de tout les ingredients",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ingredients": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "errreur lors de la récupération"
+          }
+        }
+      }
+    },
+    "/ingredients/{name}": {
+      "get": {
+        "tags": [
+          "ingredient"
+        ],
+        "summary": "récupéré un ingredient par sont nom",
+        "description": "retourne un ingredient et ses recettes associer",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "nom de ingredient rechercher",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ingredients": {
+                      "type": "object"
+                    },
+                    "recettes": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "ingredient non trouver"
+          },
+          "500": {
+            "description": "une erreur est survenu a la récupération de ingredient"
+          }
+        }
+      }
+    },
+    "/ingredient/{name}": {
+      "delete": {
+        "tags": [
+          "ingredient"
+        ],
+        "summary": "supprime un ingredient",
+        "description": "supprime un ingredient par son nom",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "nom de ingredient à supprimer",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "message": "ingrédient supprimé avec succès"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "une erreur est survenu a la suppression de ingredient"
+          }
+        }
+      }
+    },
+    "/recette": {
+      "post": {
+        "tags": [
+          "recette"
+        ],
+        "summary": "ajoute une recette",
+        "description": "permet ajouter une recette en base.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "ingredients": {
+                    "type": "string"
+                  },
+                  "allergene": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "message": "Recette créé avec succès"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Une erreur est survenu a la création"
+          }
+        }
+      }
+    },
+    "/recettes": {
+      "get": {
+        "tags": [
+          "recette"
+        ],
+        "summary": "récupère toute les recettes",
+        "description": "retourne toutes les recettes présente en base",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "recettes": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "une erreur est survenu a la récupération"
+          }
+        }
+      }
+    },
+    "/recettes/{id}": {
+      "get": {
+        "tags": [
+          "recette"
+        ],
+        "summary": "récupéré une recette par sont id",
+        "description": "retourne une recette avec sont id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id de la recette",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "recettes": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "recette non trouver"
+          },
+          "500": {
+            "description": "une erreur est survenu a la récupération de la recette"
+          }
+        }
+      }
+    },
+    "/recette/{id}": {
+      "delete": {
+        "tags": [
+          "recette"
+        ],
+        "summary": "suppression d'une recette par sont id",
+        "description": "supprime une recette par sont id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id de la recette",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "message": "recettes supprimé avec succès"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "une erreur est survenu a la suppression de la recette"
+          }
+        }
+      }
+    },
+    "/register": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Ajout un utilisateur",
+        "description": "Permet enregister un nouvelle utilisateur",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "lastname": {
+                    "type": "string"
+                  },
+                  "firstname": {
+                    "type": "string"
+                  },
+                  "birth": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "message": "utilisateur créé avec succès"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "une erreur est survenu a la création"
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Connexion d'un utilisateur",
+        "description": "Permet la connection d'un utilisateur",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "uid": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "message": "Authentification réussie",
+                    "uid": 2
+                  }
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "identifiant invalide"
+          }
+        }
+      }
+    },
+
+    "/users/{uid}": {
+      "delete": {
+        "tags": [
+          "user"
+        ],
+        "summary": "suppression d'un utilisateur",
+        "description": "supprime un utilisateur par sont id",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "id de l'utilisateur",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "message": "utilisateur supprimé avec succès"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "une erreur est survenu a la suppression de la utilisateur"
+          }
+        }
+      }
+    }
+  }
+}
