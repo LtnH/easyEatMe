@@ -4,9 +4,12 @@ const express = require("express")
 const {initializeApp} = require("firebase/app");
 const {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword} = require("firebase/auth");
 const { getFirestore, setDoc, doc, getDocs,getDoc, collection, addDoc,  query, where} = require("firebase/firestore");
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
 
 const app = express();
 app.use(express.json());
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 const firebaseConfig = {
     apiKey: "AIzaSyB3wuPps2WsDQGVVgDyZycb8PK7Cos6vG4",
@@ -48,10 +51,8 @@ app.post("/register", async (req, res) => {
 
     const { email, password, lastname, firstname, birth, phone  } = req.body;
 
-    
-
-
     const auth = getAuth(appfirebase);
+
     createUserWithEmailAndPassword(auth, email, password)
         .then(async (userCredential) => {
             // Signed in
@@ -76,7 +77,7 @@ app.post("/register", async (req, res) => {
 app.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
-    
+    const auth = getAuth(appfirebase);
 
     signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
@@ -97,9 +98,6 @@ app.post("/ingredient", async (req, res) => {
 
     const { name } = req.body;
 
-    
-
-    const auth = getAuth(appfirebase);
     try {
         const docRef = await setDoc(doc(db, "ingredient", name), {
             name: name
