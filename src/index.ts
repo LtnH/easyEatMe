@@ -22,7 +22,9 @@ const cors = require('cors');
 const app = express();
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-app.use(cors());
+app.use(cors({ origin: '*' }));
+app.use(express.json());
+
 
 const firebaseConfig = {
     apiKey: "AIzaSyB3wuPps2WsDQGVVgDyZycb8PK7Cos6vG4",
@@ -72,6 +74,7 @@ app.post('/openai-api', async (req, res) => {
 app.post('/recettes/vin', async (req, res) => {
     try {
         console.log(req)
+        
         const { recette } = req.body;
         const prompt = "donne moi seulement un nom de vin avec une petite description irais bien avec cette recette : " + recette;
 
