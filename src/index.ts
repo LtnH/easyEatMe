@@ -20,8 +20,9 @@ const swaggerDocument = require('../swagger.json');
 const cors = require('cors');
 
 const app = express();
-app.use(express.json());
+
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use(cors());
 
 const firebaseConfig = {
     apiKey: "AIzaSyB3wuPps2WsDQGVVgDyZycb8PK7Cos6vG4",
@@ -182,20 +183,24 @@ app.get("/ingredients/:name", async (req, res) => {
     const ingredientDocRef = doc(db, "ingredient", ingredientName);
 
     try {
-        const ingredientDocSnap = await getDoc(ingredientDocRef);
-
-        if (!ingredientDocSnap.exists()) {
-            return res.status(404).json({error: "Ingrédient non trouvé"});
-        }
-
-        const ingredientData = ingredientDocSnap.data();
-
-        const recetteQuery = query(collection(db, "recette"), where("ingredients", "array-contains", ingredientName));
-        const recetteQuerySnapshot = await getDocs(recetteQuery);
-
-        const recettes = recetteQuerySnapshot.docs.map((doc) => doc.data());
-
-        res.json({ingredient: ingredientData, recettes});
+      const ingredientDocSnap = await getDoc(ingredientDocRef);
+  
+      if (!ingredientDocSnap.exists()) {
+        return res.status(404).json({ error: "Ingrédient non trouvé" });
+      }
+  
+      const ingredientData = ingredientDocSnap.data();
+  
+      const recetteQuery = query(collection(db, "recette"), where("ingredients", "array-contains", ingredientName));
+      const recetteQuerySnapshot = await getDocs(recetteQuery);
+  
+      const recettes = recetteQuerySnapshot.docs.map((doc) => {
+        const recetteData = doc.data();
+        const recetteId = doc.id;
+        return { id: recetteId, ...recetteData };
+      });
+      
+      res.json({ ingredient: ingredientData, recettes });
     } catch (error) {
         console.error(error);
         res.status(500).json({error: "Une erreur est survenue lors de la récupération des détails de l'ingrédient"});
