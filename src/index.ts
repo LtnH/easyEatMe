@@ -40,6 +40,10 @@ app.post('/openai-api', async (req, res) => {
     try {
         const {prompt} = req.body;
 
+        const presentation = "fait moi une courte description de cette recette : " + prompt
+        const ingredient = "liste moi tout les ingredient sans les quantité pour cette recette : " + prompt
+        const allergen = "liste moi tout les allergens pour cette recette : " + prompt
+        const consigne = "liste moi toute les étapes de réalisation de cette recette : " + prompt
         const configuration = new Configuration({
             apiKey: process.env.OPEN_API_KEY
         });
@@ -47,7 +51,12 @@ app.post('/openai-api', async (req, res) => {
 
         const completion = await openai.createChatCompletion({
             model: "gpt-3.5-turbo",
-            messages: [{"role": "user", "content": prompt}]
+            messages: [
+                {"role": "system", "content": presentation},
+                {"role": "system", "content": ingredient},
+                {"role": "system", "content": allergen},
+                {"role": "system", "content": consigne},
+            ]
         });
 
         console.log(completion.data.choices[0].message)
@@ -299,6 +308,37 @@ app.delete('/users/:uid', async (req, res) => {
     }
 })
 
+app.get("/user/:id", async (req, res) => {
+    const userId = req.params.id;
+
+    try {
+        const userDocRef = doc(db, "user", userId);
+        const userDocSnap = await getDoc(userDocRef);
+
+        if (!userDocSnap.exists()) {
+            return res.status(404).json({ error: "Utilisateur non trouvée" });
+        }
+
+        const userData = userDocSnap.data();
+
+        res.json({ user: userData });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Une erreur est survenue lors de la récupération de l'utilisateur" });
+    }
+});
+
+app.get("/users", async (req, res) => {
+    try {
+        const usersQuerySnapshot = await getDocs(collection(db, "user"));
+        const users = usersQuerySnapshot.docs.map((doc) => doc.data());
+
+        res.json({ users });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Une erreur est survenue lors de la récupération des utilisateurs" });
+    }
+});
 
 app.listen(3000, () => {
     console.log('Serveur démarré sur le port 3000');

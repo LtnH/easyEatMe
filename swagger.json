@@ -530,7 +530,6 @@
         }
       }
     },
-
     "/users/{uid}": {
       "delete": {
         "tags": [
@@ -570,6 +569,128 @@
           },
           "500": {
             "description": "une erreur est survenu a la suppression de la utilisateur"
+          }
+        }
+      }
+    },
+    "/user/{id}": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "récupération d'un utilisateur",
+        "description": "récupération d'un utilisateur par sont id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id de l'utilisateur",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "une erreur est survenu a la récupération de la utilisateur"
+          },
+          "404": {
+            "description": "utilisateur non trouvé"
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "récupération des utilisateurs",
+        "description": "récupère tout les utilisateurs",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "une erreur est survenu a la récupération des utilisateur"
+          }
+        }
+      }
+    },
+    "/openai-api": {
+      "post": {
+        "tags": [
+          "openai"
+        ],
+        "summary": "récupère les nouvelle recette",
+        "description": "recupère toutes nouvelle recettes non présente en base via IA",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "recette": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "recettes": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "une erreur est survenu a la récupération"
           }
         }
       }
